@@ -1,0 +1,15 @@
+name: Validate ERP artifact inventory
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify all tracked files are nonempty
+        run: git ls-files -z | xargs -0 -r -n1 test -s
+      - name: Verify expected exports exist
+        run: |
+          test -s xpp/Bangladesh_RunableClass.axpp
+          test -s xpp/KOR-SSRS-Report.axpp
+          test -s 'xpp/SO & PO Customization.axpp'
+          test -s docs/Bangladesh_Payment_Automation_Functional_Design.pdf
